@@ -1,0 +1,7 @@
+/.env
+/writable/logs/*
+!/writable/logs/index.html
+/writable/session/*
+!/writable/session/index.html
+/writable/cache/*
+!/writable/cache/index.html
