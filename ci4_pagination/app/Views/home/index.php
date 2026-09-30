@@ -75,13 +75,7 @@
             <div class="header-section">
                 <h1><i class="bi bi-lightning-charge-fill text-warning"></i> Puihaha Electric Company</h1>
                 <p class="text-muted">Customer Account Management System</p>
-                <div class="d-flex justify-content-center align-items-center gap-3">
-                    <span>Signed in as <?= esc(session('auth_user_name')) ?></span>
-                    <form action="<?= site_url('logout') ?>" method="post">
-                        <?= csrf_field() ?>
-                        <button type="submit" class="btn btn-outline-secondary btn-sm">Sign out</button>
-                    </form>
-                </div>
+                <a href="<?= site_url('login') ?>" class="btn btn-outline-secondary btn-sm">Back to Login</a>
             </div>
 
             <!-- Statistics Cards -->
