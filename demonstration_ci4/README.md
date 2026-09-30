@@ -1,5 +1,7 @@
 # CodeIgniter 4 Framework
 
+This project now includes the Puihaha Electric site and customer account dashboard in one CI4 app. See [SETUP.md](SETUP.md) for local setup and database requirements.
+
 ## What is CodeIgniter?
 
 CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.

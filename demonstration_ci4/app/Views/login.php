@@ -13,7 +13,7 @@
         <div class="card mx-auto text-center p-4 p-md-5" style="max-width: 440px;">
             <h2 class="h4 text-primary-custom mb-3">Puihaha Electric</h2>
             <p class="text-muted mb-4">Click Login to continue to the dashboard.</p>
-            <a href="/dcmryss/ci4_pagination/dashboard" class="btn btn-primary">Login</a>
+            <a href="<?= site_url('dashboard') ?>" class="btn btn-primary">Login</a>
         </div>
     </div>
 </section>
