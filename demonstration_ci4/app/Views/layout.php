@@ -175,6 +175,9 @@ base_url('contact') ?>">Contact</a>
 <a class="nav-link <?= (isset($page) && $page == 'register') ? 'active' : '' ?>" href="<?=
 base_url('register') ?>">Register</a>
 </li>
+<li class="nav-item">
+<a class="nav-link <?= (isset($page) && $page == 'login') ? 'active' : '' ?>" href="<?= site_url('login') ?>">Login</a>
+</li>
 </ul>
 </div>
 </div>

@@ -6,7 +6,7 @@ This CodeIgniter 4 app uses the `electric_company` MySQL database. The supplied 
 
 1. Start Apache and MySQL.
 2. Create a database named `electric_company` in phpMyAdmin, then import `database/electric_company.sql` into it.
-3. Open `http://localhost/dcmryss/ci4_pagination/login` and click **Login** to open the dashboard.
+3. Open `http://localhost/dcmryss/demonstration_ci4/public/index.php/login` and click **Login** to open the dashboard in `ci4_pagination`.
 
 The dashboard does not require an account or password.
 

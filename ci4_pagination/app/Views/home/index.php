@@ -75,7 +75,7 @@
             <div class="header-section">
                 <h1><i class="bi bi-lightning-charge-fill text-warning"></i> Puihaha Electric Company</h1>
                 <p class="text-muted">Customer Account Management System</p>
-                <a href="<?= site_url('login') ?>" class="btn btn-outline-secondary btn-sm">Back to Login</a>
+                <a href="/dcmryss/demonstration_ci4/public/index.php/login" class="btn btn-outline-secondary btn-sm">Back to Login</a>
             </div>
 
             <!-- Statistics Cards -->
