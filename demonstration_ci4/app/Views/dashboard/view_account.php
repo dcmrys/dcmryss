@@ -55,6 +55,10 @@
             <div class="header-section">
                 <h1><i class="bi bi-lightning-charge-fill text-warning"></i> Puihaha Electric Company</h1>
                 <p class="text-muted">Customer Account Details</p>
+                <form method="post" action="<?= site_url('logout') ?>">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Log out</button>
+                </form>
             </div>
 
             <!-- Back Button -->
@@ -62,7 +66,16 @@
                 <a href="<?= site_url('dashboard') ?>" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i> Back to Dashboard
                 </a>
+                <a href="<?= site_url('account/' . $account['id'] . '/edit') ?>" class="btn btn-outline-primary">Edit Account</a>
+                <form method="post" action="<?= site_url('account/' . $account['id'] . '/delete') ?>" class="d-inline" onsubmit="return confirm('Delete this customer account?');">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-outline-danger">Delete Account</button>
+                </form>
             </div>
+
+            <?php if (session()->getFlashdata('success')): ?>
+                <div class="alert alert-success" role="status"><?= esc(session()->getFlashdata('success')) ?></div>
+            <?php endif; ?>
 
             <!-- Account Information -->
             <div class="card">

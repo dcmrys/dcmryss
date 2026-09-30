@@ -75,8 +75,19 @@
             <div class="header-section">
                 <h1><i class="bi bi-lightning-charge-fill text-warning"></i> Puihaha Electric Company</h1>
                 <p class="text-muted">Customer Account Management System</p>
-                <a href="<?= site_url('login') ?>" class="btn btn-outline-secondary btn-sm">Back to Login</a>
+                <p class="text-muted mb-2">Signed in as <strong><?= esc(session()->get('dashboard_username')) ?></strong></p>
+                <form method="post" action="<?= site_url('logout') ?>">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Log out</button>
+                </form>
             </div>
+
+            <?php if (session()->getFlashdata('success')): ?>
+                <div class="alert alert-success" role="status"><?= esc(session()->getFlashdata('success')) ?></div>
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('error')): ?>
+                <div class="alert alert-danger" role="alert"><?= esc(session()->getFlashdata('error')) ?></div>
+            <?php endif; ?>
 
             <!-- Statistics Cards -->
             <div class="row mb-4">
@@ -142,6 +153,9 @@
             </div>
 
             <!-- Customer Accounts Table -->
+            <div class="d-flex justify-content-end mb-3">
+                <a href="<?= site_url('account/new') ?>" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Account</a>
+            </div>
             <div class="table-container">
                 <table class="table table-hover">
                     <thead class="table-dark">
@@ -174,10 +188,15 @@
                                         ?>
                                         <span class="badge <?= $badgeClass ?>"><?= ucfirst(esc($account['status'])) ?></span>
                                     </td>
-                                    <td>
+                                    <td class="text-nowrap">
                                         <a href="<?= site_url('account/' . $account['id']) ?>" class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye"></i> View
                                         </a>
+                                        <a href="<?= site_url('account/' . $account['id'] . '/edit') ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <form method="post" action="<?= site_url('account/' . $account['id'] . '/delete') ?>" class="d-inline" onsubmit="return confirm('Delete this customer account?');">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

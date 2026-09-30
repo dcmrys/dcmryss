@@ -176,7 +176,11 @@ base_url('contact') ?>">Contact</a>
 base_url('register') ?>">Register</a>
 </li>
 <li class="nav-item">
-<a class="nav-link <?= (isset($page) && $page == 'login') ? 'active' : '' ?>" href="<?= site_url('login') ?>">Login</a>
+<?php if (session()->get('dashboard_logged_in') === true): ?>
+<a class="nav-link" href="<?= site_url('dashboard') ?>">Dashboard</a>
+<?php else: ?>
+<a class="nav-link <?= (isset($page) && $page == 'login') ? 'active' : '' ?>" href="<?= site_url('login') ?>">Staff Login</a>
+<?php endif; ?>
 </li>
 </ul>
 </div>
