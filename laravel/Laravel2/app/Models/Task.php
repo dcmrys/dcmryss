@@ -11,4 +11,9 @@ class Task extends Model
         'description',
         'completed',
     ];
+
+    protected function casts(): array
+    {
+        return ['completed' => 'boolean'];
+    }
 }

@@ -1,7 +1,17 @@
 <?php
 
-test('the application returns a successful response', function () {
-    $response = $this->get('/');
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-    $response->assertStatus(200);
+uses(RefreshDatabase::class);
+
+test('the task and membership management pages are available', function () {
+    $this->withoutVite();
+
+    foreach (['/', '/tasks', '/members', '/members/create', '/categories', '/levels'] as $path) {
+        $this->get($path)->assertOk();
+    }
+
+    foreach (['/transactions', '/catalog'] as $path) {
+        $this->get($path)->assertNotFound();
+    }
 });

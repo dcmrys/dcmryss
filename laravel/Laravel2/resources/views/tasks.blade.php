@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#260b18">
-    <title>My Tasks</title>
+    <title>My Tasks · Novelle.</title>
     <style>
         :root {
             color-scheme: dark;
@@ -96,6 +96,9 @@
 
         .brand-mark svg { width: 19px; height: 19px; }
         .topbar-note { color: var(--muted); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+        .topbar-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+        .topbar-nav a { padding: 9px 11px; border-radius: 10px; color: var(--muted); font-size: .77rem; font-weight: 650; text-decoration: none; }
+        .topbar-nav a:hover, .topbar-nav a.active { color: var(--text); background: rgba(255, 239, 246, .12); }
 
         .hero {
             display: grid;
@@ -295,6 +298,12 @@
         }
 
         .status.done { border-color: rgba(185, 227, 192, .27); color: #d2f0d3; background: rgba(185, 227, 192, .1); }
+        .task-actions { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+        .task-actions form { margin: 0; }
+        .task-action { border: 1px solid rgba(255, 230, 238, .2); border-radius: 9px; padding: 7px 10px; background: rgba(255, 239, 246, .08); color: #f4c7d4; font-size: .73rem; font-weight: 650; }
+        .task-action:hover { background: rgba(255, 239, 246, .17); }
+        .task-action.delete { color: #e7a6b8; }
+        .task.completed h3 { text-decoration: line-through; text-decoration-color: rgba(255, 230, 238, .5); color: #d7b9c5; }
         .empty { display: grid; min-height: 280px; place-content: center; padding: 20px; text-align: center; }
         .empty-icon {
             display: grid;
@@ -315,6 +324,8 @@
         .flash { margin-bottom: 22px; padding: 14px 18px; border: 1px solid rgba(185, 227, 192, .35); border-radius: 14px; color: #e0f6e0; background: rgba(75, 130, 83, .18); }
 
         @media (max-width: 850px) {
+            .topbar { flex-wrap: wrap; }
+            .topbar-nav { width: 100%; justify-content: flex-start; }
             .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 60px; }
             .summary { max-width: 390px; }
             .workspace { grid-template-columns: 1fr; }
@@ -336,6 +347,7 @@
             .task { grid-template-columns: 32px minmax(0, 1fr); gap: 11px; padding: 14px; }
             .task-icon { width: 32px; height: 32px; }
             .status { grid-column: 2; width: fit-content; }
+            .task-actions { grid-column: 2; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -359,7 +371,12 @@
                 </span>
                 <span>Novelle.</span>
             </a>
-            <span class="topbar-note">A task list for an organized sight.</span>
+            <nav class="topbar-nav" aria-label="Main navigation">
+                <a class="active" href="{{ route('tasks.index') }}" aria-current="page">Tasks</a>
+                <a href="{{ route('members.index') }}">Members</a>
+                <a href="{{ route('categories.index') }}">Membership Categories</a>
+                <a href="{{ route('levels.index') }}">Membership Levels</a>
+            </nav>
         </header>
 
         <main>
@@ -444,7 +461,7 @@
                     @else
                         <div class="task-list">
                             @foreach ($tasks as $task)
-                                <article class="task">
+                                <article class="task {{ $task->completed ? 'completed' : '' }}">
                                     <span class="task-icon" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m5 12 4 4L19 6"/>
@@ -459,6 +476,16 @@
                                     <span class="status {{ $task->completed ? 'done' : '' }}">
                                         {{ $task->completed ? 'Completed' : 'To do' }}
                                     </span>
+                                    <div class="task-actions">
+                                        <form method="POST" action="{{ route('tasks.toggle', $task) }}">
+                                            @csrf @method('PATCH')
+                                            <button class="task-action" type="submit">{{ $task->completed ? 'Mark as to do' : 'Mark complete' }}</button>
+                                        </form>
+                                        <form method="POST" action="{{ route('tasks.destroy', $task) }}" onsubmit="return confirm('Remove this task?')">
+                                            @csrf @method('DELETE')
+                                            <button class="task-action delete" type="submit">Remove</button>
+                                        </form>
+                                    </div>
                                 </article>
                             @endforeach
                         </div>
