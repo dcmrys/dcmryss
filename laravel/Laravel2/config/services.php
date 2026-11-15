@@ -35,7 +35,4 @@ return [
         ],
     ],
 
-    'google_maps' => ['key' => env('GOOGLE_MAPS_KEY')],
-    'openweather' => ['key' => env('OPENWEATHER_KEY')],
-
 ];

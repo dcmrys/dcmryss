@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'Payments')
-@section('eyebrow', 'MEMBERSHIP FINANCE')
 @section('heading', 'Payment Register')
 @section('subtitle', 'Review all recorded membership payments and their transaction references.')
 @section('actions')<a class="btn btn-outline" href="{{ route('transactions.index') }}">← Transactions</a>@endsection

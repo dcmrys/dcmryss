@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'Transactions')
-@section('eyebrow', 'MEMBERSHIP FINANCE')
 @section('heading', 'Transaction Processing')
 @section('subtitle', 'Track application fees, renewal charges, payments, approvals, and membership periods.')
 @section('actions')

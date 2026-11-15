@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Member extends Model
 {
@@ -39,6 +40,13 @@ class Member extends Model
         return $this->hasMany(MembershipTransaction::class);
     }
 
+    public function applicationTransaction(): HasOne
+    {
+        return $this->hasOne(MembershipTransaction::class)
+            ->where('type', 'application')
+            ->latestOfMany();
+    }
+
     public function getFullNameAttribute(): string
     {
         return trim("{$this->first_name} {$this->last_name}");
@@ -51,5 +59,14 @@ class Member extends Model
         }
 
         return $this->status;
+    }
+
+    public function getDirectoryStatusAttribute(): string
+    {
+        if ($this->status === 'pending' && $this->applicationTransaction?->application?->status === 'approved') {
+            return 'approved';
+        }
+
+        return $this->display_status;
     }
 }

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#260b18">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/novelle-logo.svg') }}?v=3">
     <title>@yield('title', 'Members') · {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/css/burgundy.css', 'resources/js/app.js'])
 </head>
@@ -11,31 +12,27 @@
     <div class="app-shell">
         <header class="topbar">
             <a class="brand" href="{{ route('tasks.index') }}" aria-label="Novelle tasks home">
-                <span class="brand-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>
-                </span>
-                <span>Novelle.</span>
+                <img class="brand-mark" src="{{ asset('images/novelle-logo.svg') }}?v=3" alt="">
+                <span>Novelle<span class="auth-brand-dot">.</span></span>
             </a>
             <nav class="nav" aria-label="Main navigation">
                 <a class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }}" href="{{ route('tasks.index') }}">Tasks</a>
                 <a class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}" href="{{ route('members.index') }}">Members</a>
                 @if(auth()->user()->isAdmin())
-                <a class="nav-link {{ request()->routeIs('applications.*') ? 'active' : '' }}" href="{{ route('applications.index') }}">Applications</a>
-                <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">Transactions</a>
-                <a class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}" href="{{ route('payments.index') }}">Payments</a>
                 <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Membership Categories</a>
                 <a class="nav-link {{ request()->routeIs('levels.*') ? 'active' : '' }}" href="{{ route('levels.index') }}">Membership Levels</a>
+                <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">Transactions</a>
+                <a class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}" href="{{ route('payments.index') }}">Payments</a>
                 @else
                 <a class="nav-link {{ request()->routeIs('my.transactions') ? 'active' : '' }}" href="{{ route('my.transactions') }}">My Transactions</a>
                 @endif
-                <form method="POST" action="{{ route('logout') }}">@csrf<button class="nav-link nav-button" type="submit">Sign out</button></form>
+                <form method="POST" action="{{ route('logout') }}">@csrf<button class="task-action" type="submit">Sign out</button></form>
             </nav>
         </header>
 
         <main class="content">
             <div class="page-heading">
                 <div>
-                    <div class="eyebrow">@yield('eyebrow', 'YOUR PERSONAL WORKSPACE')</div>
                     <h1>@yield('heading', 'Members')</h1>
                     <p class="heading-subtitle">@yield('subtitle')</p>
                 </div>

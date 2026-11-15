@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'Start Membership Renewal')
-@section('eyebrow', 'MEMBERSHIP FINANCE')
 @section('heading', 'Start a renewal')
 @section('subtitle', 'Create a pending charge. Record payment, then approve it to extend the member’s dates.')
 @section('actions')<a class="btn btn-outline" href="{{ route('transactions.index') }}">← Transactions</a>@endsection

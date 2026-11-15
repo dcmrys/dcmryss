@@ -40,7 +40,7 @@ Open `/login` for admin or member sign-in. The admin can add further member acco
 
 The default mailer sends queued messages to a local Mailpit SMTP server at `127.0.0.1:1025`; start Mailpit and view captured messages at `http://127.0.0.1:8025`. Mailpit is a local testing inbox and does not deliver to external email accounts. Run `php artisan queue:work` in a second terminal to process queued messages. To deliver to a real inbox, configure your provider's SMTP host and credentials in `.env` (for Gmail, use an App Password). This Laravel version reads `MAIL_SCHEME` for SMTP scheme settings.
 
-Set `GOOGLE_MAPS_KEY` to a browser key restricted to your site referrer and the Maps JavaScript API. Set `OPENWEATHER_KEY` to your OpenWeather server key. Run `php artisan config:clear` after changing either key. Without the Google key, applicants can still enter coordinates manually; without the OpenWeather key, the weather panel reports that weather is unavailable. Do not commit `.env`.
+The membership form uses Leaflet with OpenStreetMap tiles and Open-Meteo for current weather. Neither requires an API key or billing setup for this non-commercial project. The map includes OpenStreetMap attribution; follow the [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) if you deploy it. Open-Meteo’s [free API terms](https://open-meteo.com/en/pricing) currently limit free access to non-commercial use and 10,000 calls per day; the weather response is cached for ten minutes.
 
 ## Tests
 

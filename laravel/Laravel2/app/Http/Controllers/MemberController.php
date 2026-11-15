@@ -21,10 +21,10 @@ class MemberController extends Controller
             'search' => ['nullable', 'string', 'max:100'],
             'category' => ['nullable', 'integer', 'exists:membership_categories,id'],
             'level' => ['nullable', 'integer', 'exists:membership_levels,id'],
-            'status' => ['nullable', Rule::in(['pending', 'active', 'inactive', 'expired'])],
+            'status' => ['nullable', Rule::in(['pending', 'approved', 'active', 'inactive', 'expired'])],
         ]);
 
-        $members = Member::with(['category', 'level'])
+        $members = Member::with(['category', 'level', 'applicationTransaction.application'])
             ->when($filters['search'] ?? null, function ($query, $search) {
                 foreach (preg_split('/\s+/', trim($search)) as $term) {
                     $query->where(function ($query) use ($term) {
@@ -38,7 +38,13 @@ class MemberController extends Controller
             ->when($filters['category'] ?? null, fn ($query, $id) => $query->where('membership_category_id', $id))
             ->when($filters['level'] ?? null, fn ($query, $id) => $query->where('membership_level_id', $id))
             ->when($filters['status'] ?? null, function ($query, $status) {
-                if ($status === 'expired') {
+                if ($status === 'approved') {
+                    $query->where('status', 'pending')
+                        ->whereHas('applicationTransaction.application', fn ($application) => $application->where('status', 'approved'));
+                } elseif ($status === 'pending') {
+                    $query->where('status', 'pending')
+                        ->whereDoesntHave('applicationTransaction.application', fn ($application) => $application->where('status', 'approved'));
+                } elseif ($status === 'expired') {
                     $query->where('status', 'active')->whereDate('expires_at', '<', today());
                 } elseif ($status === 'active') {
                     $query->where('status', 'active')->whereDate('expires_at', '>=', today());

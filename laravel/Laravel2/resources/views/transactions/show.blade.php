@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'Transaction '.$transaction->reference_no)
-@section('eyebrow', 'TRANSACTION DETAIL')
 @section('heading', $transaction->reference_no)
 @section('subtitle', ucfirst($transaction->type).' transaction for '.$transaction->member->full_name)
 @section('actions')

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/novelle-logo.svg') }}?v=3">
     <title>Sign in | {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/css/burgundy.css'])
 </head>
@@ -10,7 +11,7 @@
     <main class="auth-shell">
         <header class="auth-header">
             <a class="auth-brand" href="{{ route('login') }}" aria-label="Novelle home">
-                <span class="auth-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></span>
+                <img class="auth-brand-mark" src="{{ asset('images/novelle-logo.svg') }}?v=3" alt="">
                 <span>Novelle<span class="auth-brand-dot">.</span></span>
             </a>
             <a class="auth-header-link" href="{{ route('membership.create') }}">Apply for membership <span aria-hidden="true">↗</span></a>

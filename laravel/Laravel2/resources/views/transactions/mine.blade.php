@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'My Transactions')
-@section('eyebrow', 'MEMBER ACCOUNT')
 @section('heading', 'My Transaction History')
 @section('subtitle', 'Review your membership applications, renewals, balances, and recorded payments.')
 

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Membership Categories')
-@section('eyebrow', 'MEMBERSHIP SETTINGS')
 @section('heading', 'Membership Categories')
 @section('subtitle', 'Organize members by category. Changes here appear in the member registration form.')
 

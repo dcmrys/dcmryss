@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title', 'Membership Applications')
-@section('eyebrow', 'APPLICATION REVIEW')
 @section('heading', 'Membership Applications')
 @section('subtitle', 'Review applications here. Approval creates a pending membership transaction; record payment and approve the transaction to activate the membership.')
 @section('actions')

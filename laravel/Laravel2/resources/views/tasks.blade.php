@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#260b18">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/novelle-logo.svg') }}?v=3">
     <title>My Tasks · Novelle.</title>
     <style>
         :root {
             color-scheme: dark;
-            font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, sans-serif;
+            font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-synthesis: none;
             --text: #fff6f7;
             --muted: #d5b9c5;
@@ -64,27 +65,30 @@
         .brand {
             display: inline-flex;
             align-items: center;
-            gap: 11px;
-            color: var(--text);
-            font-size: .95rem;
-            font-weight: 700;
-            letter-spacing: -.025em;
+            gap: 14px;
+            flex: none;
+            margin: 0;
+            color: #fff7f8;
+            font-size: 1.25rem;
+            font-weight: 750;
+            letter-spacing: -.04em;
             text-decoration: none;
         }
 
-        .brand-mark {
-            display: grid;
-            width: 34px;
-            height: 34px;
-            place-items: center;
-            border: 1px solid rgba(255, 255, 255, .34);
-            border-radius: 11px;
-            color: #491426;
-            background: linear-gradient(145deg, #fff0f2, #d790a9);
-            box-shadow: 0 4px 20px rgba(224, 118, 154, .27);
-        }
+        .brand:hover { color: var(--text); }
 
-        .brand-mark svg { width: 19px; height: 19px; }
+        .brand-mark {
+            display: block;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: 10px;
+            background: transparent;
+            box-shadow: 0 4px 20px rgba(224, 118, 154, .2);
+            object-fit: contain;
+        }
+        .auth-brand-dot { color: #e9a9bd; }
         .topbar-note { color: var(--muted); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
         .topbar-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
         .topbar-nav a { padding: 9px 11px; border-radius: 10px; color: var(--muted); font-size: .77rem; font-weight: 650; text-decoration: none; }
@@ -96,25 +100,6 @@
             align-items: end;
             gap: 32px;
             padding: 75px 12px 53px;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0 0 17px;
-            color: #f0bfce;
-            font-size: .73rem;
-            font-weight: 700;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-        }
-
-        .eyebrow::before {
-            width: 21px;
-            height: 1px;
-            background: currentColor;
-            content: "";
         }
 
         h1, h2, h3, p { margin-top: 0; }
@@ -169,6 +154,8 @@
             align-items: start;
             gap: 22px;
         }
+
+        .workspace-member { grid-template-columns: minmax(0, 1fr); }
 
         .panel { min-width: 0; padding: 30px; border-radius: 26px; }
         .composer { background: var(--glass-strong); }
@@ -354,22 +341,17 @@
     <div class="page">
         <header class="topbar glass">
             <a class="brand" href="{{ route('tasks.index') }}" aria-label="My Tasks home">
-                <span class="brand-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m5 12 4 4L19 6"/>
-                    </svg>
-                </span>
-                <span>Novelle.</span>
+                <img class="brand-mark" src="{{ asset('images/novelle-logo.svg') }}?v=3" alt="">
+                <span>Novelle<span class="auth-brand-dot">.</span></span>
             </a>
             <nav class="topbar-nav" aria-label="Main navigation">
                 <a class="active" href="{{ route('tasks.index') }}" aria-current="page">Tasks</a>
                 <a href="{{ route('members.index') }}">Members</a>
                 @if(auth()->user()->isAdmin())
-                <a href="{{ route('applications.index') }}">Applications</a>
-                <a href="{{ route('transactions.index') }}">Transactions</a>
-                <a href="{{ route('payments.index') }}">Payments</a>
                 <a href="{{ route('categories.index') }}">Membership Categories</a>
                 <a href="{{ route('levels.index') }}">Membership Levels</a>
+                <a href="{{ route('transactions.index') }}">Transactions</a>
+                <a href="{{ route('payments.index') }}">Payments</a>
                 @else
                 <a href="{{ route('my.transactions') }}">My Transactions</a>
                 @endif
@@ -380,7 +362,6 @@
         <main>
             <section class="hero" aria-labelledby="page-title">
                 <div>
-                    <p class="eyebrow">Your personal workspace</p>
                     <h1 id="page-title">Novelle <em>count.</em></h1>
                     <p class="hero-copy">{{ auth()->user()->isAdmin() ? 'Post and manage tasks for members.' : 'View tasks posted by the admin.' }}</p>
                 </div>
@@ -400,7 +381,7 @@
                 <div class="flash" role="status">{{ session('success') }}</div>
             @endif
 
-            <div class="workspace">
+            <div class="workspace {{ auth()->user()->isAdmin() ? 'workspace-admin' : 'workspace-member' }}">
                 @if(auth()->user()->isAdmin())
                 <section class="panel composer glass" aria-labelledby="add-task-title">
                     <p class="panel-kicker">New Task</p>

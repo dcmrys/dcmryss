@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @php($editing = $member->exists)
 @section('title', $editing ? 'Edit member' : 'Add member')
-@section('eyebrow', $editing ? 'UPDATE PROFILE' : 'NEW REGISTRATION')
 @section('heading', $editing ? 'Edit member' : 'Add a member')
 @section('subtitle', $editing ? 'Update personal details, category, or membership level.' : 'Choose a category and level while registering a member.')
 @section('actions')<a class="btn btn-outline" href="{{ $editing ? route('members.show', $member) : route('members.index') }}">← Back</a>@endsection

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Membership Levels')
-@section('eyebrow', 'MEMBERSHIP SETTINGS')
 @section('heading', 'Membership Levels')
 @section('subtitle', 'Set each level’s fee, validity period, and benefits. Members choose a level during registration.')
 
