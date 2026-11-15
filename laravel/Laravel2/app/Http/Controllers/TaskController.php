@@ -33,6 +33,16 @@ class TaskController extends Controller
         return back()->with('success', $task->completed ? 'Task completed.' : 'Task moved back to your to-do list.');
     }
 
+    public function update(Request $request, Task $task)
+    {
+        $task->update($request->validate([
+            'task_title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
+        ]));
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated.');
+    }
+
     public function destroy(Task $task)
     {
         $task->delete();

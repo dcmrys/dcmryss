@@ -12,6 +12,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $this->withoutVite();
     $this->seed(DatabaseSeeder::class);
+    $this->actingAs(\App\Models\User::factory()->create(['role' => 'admin']));
 });
 
 test('the member form provides category and level dropdowns with plan details', function () {
@@ -33,7 +34,7 @@ test('registering a member applies the selected level and its validity', functio
     $level = MembershipLevel::where('name', 'Basic')->firstOrFail();
 
     $this->post(route('members.store'), [
-        'first_name' => 'Alex', 'last_name' => 'Rivera', 'email' => 'alex@example.test',
+        'first_name' => 'Alex', 'last_name' => 'Rivera', 'email' => 'alex@example.test', 'password' => 'password123',
         'membership_category_id' => $category->id, 'membership_level_id' => $level->id,
     ])->assertRedirect();
 
@@ -78,7 +79,7 @@ test('a member can be edited and deleted from the directory', function () {
     $level = MembershipLevel::where('name', 'Basic')->firstOrFail();
 
     $this->post(route('members.store'), [
-        'first_name' => 'Alex', 'last_name' => 'Rivera', 'email' => 'alex@example.test',
+        'first_name' => 'Alex', 'last_name' => 'Rivera', 'email' => 'alex@example.test', 'password' => 'password123',
         'membership_category_id' => $category->id, 'membership_level_id' => $level->id,
     ])->assertRedirect();
     $member = Member::where('email', 'alex@example.test')->firstOrFail();
@@ -86,7 +87,7 @@ test('a member can be edited and deleted from the directory', function () {
     $this->get(route('members.index'))->assertSee(route('members.edit', $member), false)
         ->assertSee(route('members.destroy', $member), false);
     $this->put(route('members.update', $member), [
-        'first_name' => 'Alexandra', 'last_name' => 'Rivera', 'email' => 'alex@example.test',
+        'first_name' => 'Alexandra', 'last_name' => 'Rivera', 'email' => 'alex@example.test', 'password' => 'password123',
         'membership_category_id' => $category->id, 'membership_level_id' => $level->id,
     ])->assertRedirect(route('members.show', $member));
     $this->get(route('members.show', $member))->assertSee('Alexandra Rivera');

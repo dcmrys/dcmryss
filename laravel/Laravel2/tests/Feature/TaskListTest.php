@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('the burgundy task list works alongside membership pages', function () {
+    $this->withoutVite();
+    $this->actingAs(\App\Models\User::factory()->create(['role' => 'admin']));
     $this->get(route('tasks.index'))->assertOk()->assertSee('Novelle')->assertSee('Members');
 
     $this->post(route('tasks.store'), [

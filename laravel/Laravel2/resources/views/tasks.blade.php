@@ -26,22 +26,12 @@
             margin: 0;
             color: var(--text);
             background:
+                radial-gradient(rgba(255, 245, 249, .025) .6px, transparent .6px),
                 radial-gradient(circle at 10% 0%, rgba(139, 36, 69, .9), transparent 35rem),
                 radial-gradient(circle at 91% 22%, rgba(116, 32, 68, .62), transparent 31rem),
                 radial-gradient(circle at 52% 105%, rgba(104, 28, 65, .65), transparent 36rem),
                 linear-gradient(145deg, #2a0b19 0%, #170913 58%, #210a19 100%);
-            background-attachment: fixed;
-        }
-
-        body::before {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image: radial-gradient(rgba(255, 245, 249, .16) .6px, transparent .6px);
-            background-size: 6px 6px;
-            opacity: .16;
-            pointer-events: none;
-            content: "";
+            background-size: 6px 6px, auto, auto, auto, auto;
         }
 
         button, input, textarea { font: inherit; }
@@ -374,8 +364,16 @@
             <nav class="topbar-nav" aria-label="Main navigation">
                 <a class="active" href="{{ route('tasks.index') }}" aria-current="page">Tasks</a>
                 <a href="{{ route('members.index') }}">Members</a>
+                @if(auth()->user()->isAdmin())
+                <a href="{{ route('applications.index') }}">Applications</a>
+                <a href="{{ route('transactions.index') }}">Transactions</a>
+                <a href="{{ route('payments.index') }}">Payments</a>
                 <a href="{{ route('categories.index') }}">Membership Categories</a>
                 <a href="{{ route('levels.index') }}">Membership Levels</a>
+                @else
+                <a href="{{ route('my.transactions') }}">My Transactions</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="task-action">Sign out</button></form>
             </nav>
         </header>
 
@@ -384,7 +382,7 @@
                 <div>
                     <p class="eyebrow">Your personal workspace</p>
                     <h1 id="page-title">Novelle <em>count.</em></h1>
-                    <p class="hero-copy">Make tasks today count. List, add, and view tasks.</p>
+                    <p class="hero-copy">{{ auth()->user()->isAdmin() ? 'Post and manage tasks for members.' : 'View tasks posted by the admin.' }}</p>
                 </div>
                 <div class="summary glass" aria-label="Task summary">
                     <div class="summary-item">
@@ -403,6 +401,7 @@
             @endif
 
             <div class="workspace">
+                @if(auth()->user()->isAdmin())
                 <section class="panel composer glass" aria-labelledby="add-task-title">
                     <p class="panel-kicker">New Task</p>
                     <h2 id="add-task-title">Add a task</h2>
@@ -438,6 +437,7 @@
                     </form>
                 </section>
 
+                @endif
                 <section class="panel list-panel glass" aria-labelledby="saved-tasks-title">
                     <div class="list-heading">
                         <div>
@@ -456,7 +456,7 @@
                                 </svg>
                             </span>
                             <h3>Your list starts here</h3>
-                            <p>Add your first task today!</p>
+                            <p>{{ auth()->user()->isAdmin() ? 'Add your first task today!' : 'The admin has not posted any tasks yet.' }}</p>
                         </div>
                     @else
                         <div class="task-list">
@@ -476,6 +476,7 @@
                                     <span class="status {{ $task->completed ? 'done' : '' }}">
                                         {{ $task->completed ? 'Completed' : 'To do' }}
                                     </span>
+                                    @if(auth()->user()->isAdmin())
                                     <div class="task-actions">
                                         <form method="POST" action="{{ route('tasks.toggle', $task) }}">
                                             @csrf @method('PATCH')
@@ -485,7 +486,16 @@
                                             @csrf @method('DELETE')
                                             <button class="task-action delete" type="submit">Remove</button>
                                         </form>
+                                        <details class="task-editor"><summary class="task-action">Edit</summary>
+                                            <form method="POST" action="{{ route('tasks.update', $task) }}">
+                                                @csrf @method('PUT')
+                                                <label>Title <input name="task_title" value="{{ $task->task_title }}" maxlength="255" required></label>
+                                                <label>Description <textarea name="description" maxlength="2000">{{ $task->description }}</textarea></label>
+                                                <button class="task-action" type="submit">Save task</button>
+                                            </form>
+                                        </details>
                                     </div>
+                                    @endif
                                 </article>
                             @endforeach
                         </div>

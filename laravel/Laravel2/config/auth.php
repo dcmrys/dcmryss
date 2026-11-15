@@ -4,6 +4,16 @@ use App\Models\User;
 
 return [
 
+    'bootstrap_admin' => [
+        'email' => env('ADMIN_EMAIL'),
+        'password' => env('ADMIN_PASSWORD'),
+    ],
+
+    'bootstrap_member' => [
+        'email' => env('DEMO_MEMBER_EMAIL'),
+        'password' => env('DEMO_MEMBER_PASSWORD'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults

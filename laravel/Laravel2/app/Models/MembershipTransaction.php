@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MembershipTransaction extends Model
 {
     protected $fillable = [
-        'member_id', 'membership_category_id', 'membership_level_id', 'type', 'status',
-        'amount_due', 'starts_on', 'ends_on', 'processed_at', 'notes',
+        'reference_no', 'membership_application_id', 'member_id', 'membership_category_id',
+        'membership_level_id', 'type', 'status', 'amount_due', 'starts_on', 'ends_on',
+        'processed_at', 'notes',
     ];
+
+    public const STATUSES = ['pending', 'paid', 'approved', 'expired', 'cancelled'];
 
     protected function casts(): array
     {
@@ -26,6 +29,11 @@ class MembershipTransaction extends Model
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function application(): BelongsTo
+    {
+        return $this->belongsTo(MembershipApplication::class, 'membership_application_id');
     }
 
     public function category(): BelongsTo
@@ -45,6 +53,24 @@ class MembershipTransaction extends Model
 
     public function getBalanceAttribute(): float
     {
-        return max(0, round((float) $this->amount_due - (float) $this->payments()->sum('amount'), 2));
+        $paid = $this->relationLoaded('payments')
+            ? $this->payments->sum(fn (Payment $payment) => (float) $payment->amount)
+            : $this->payments()->sum('amount');
+
+        return max(0, round((float) $this->amount_due - (float) $paid, 2));
+    }
+
+    public function getPaidAmountAttribute(): float
+    {
+        return (float) $this->amount_due - $this->balance;
+    }
+
+    public function getDisplayStatusAttribute(): string
+    {
+        if ($this->status === 'approved' && $this->ends_on?->lt(today())) {
+            return 'expired';
+        }
+
+        return $this->status;
     }
 }

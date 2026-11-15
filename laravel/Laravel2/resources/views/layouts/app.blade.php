@@ -19,8 +19,16 @@
             <nav class="nav" aria-label="Main navigation">
                 <a class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }}" href="{{ route('tasks.index') }}">Tasks</a>
                 <a class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}" href="{{ route('members.index') }}">Members</a>
+                @if(auth()->user()->isAdmin())
+                <a class="nav-link {{ request()->routeIs('applications.*') ? 'active' : '' }}" href="{{ route('applications.index') }}">Applications</a>
+                <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">Transactions</a>
+                <a class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}" href="{{ route('payments.index') }}">Payments</a>
                 <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Membership Categories</a>
                 <a class="nav-link {{ request()->routeIs('levels.*') ? 'active' : '' }}" href="{{ route('levels.index') }}">Membership Levels</a>
+                @else
+                <a class="nav-link {{ request()->routeIs('my.transactions') ? 'active' : '' }}" href="{{ route('my.transactions') }}">My Transactions</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}">@csrf<button class="nav-link nav-button" type="submit">Sign out</button></form>
             </nav>
         </header>
 

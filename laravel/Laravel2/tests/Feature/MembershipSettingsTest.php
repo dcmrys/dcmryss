@@ -10,6 +10,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $this->withoutVite();
     $this->seed(DatabaseSeeder::class);
+    $this->actingAs(\App\Models\User::factory()->create(['role' => 'admin']));
 });
 
 test('category and level pages show the provided options and can manage new options', function () {
@@ -44,7 +45,7 @@ test('categories and levels used by members cannot be deleted', function () {
     $level = MembershipLevel::where('name', 'Basic')->firstOrFail();
 
     $this->post(route('members.store'), [
-        'first_name' => 'Kai', 'last_name' => 'Santos', 'email' => 'kai@example.test',
+        'first_name' => 'Kai', 'last_name' => 'Santos', 'email' => 'kai@example.test', 'password' => 'password123',
         'membership_category_id' => $category->id, 'membership_level_id' => $level->id,
     ])->assertRedirect();
 

@@ -34,7 +34,7 @@ class MembershipCategoryController extends Controller
 
     public function destroy(MembershipCategory $category)
     {
-        if ($category->members()->exists() || MembershipTransaction::where('membership_category_id', $category->id)->exists()) {
+        if ($category->members()->exists() || $category->applications()->exists() || MembershipTransaction::where('membership_category_id', $category->id)->exists()) {
             return back()->withErrors(['category' => 'This category is in use and cannot be deleted.']);
         }
 

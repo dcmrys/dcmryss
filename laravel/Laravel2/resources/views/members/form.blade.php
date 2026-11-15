@@ -17,6 +17,7 @@
                 <label class="field"><span>First name <em>*</em></span><input name="first_name" value="{{ old('first_name', $member->first_name) }}" required maxlength="100" autocomplete="given-name"></label>
                 <label class="field"><span>Last name <em>*</em></span><input name="last_name" value="{{ old('last_name', $member->last_name) }}" required maxlength="100" autocomplete="family-name"></label>
                 <label class="field"><span>Email address <em>*</em></span><input name="email" type="email" value="{{ old('email', $member->email) }}" required autocomplete="email"></label>
+                <label class="field"><span>{{ $editing ? 'New sign-in password' : 'Sign-in password' }} @unless($editing)<em>*</em>@endunless</span><input name="password" type="password" minlength="8" maxlength="255" @unless($editing) required @endunless autocomplete="new-password"><small>{{ $editing ? ($member->user_id ? 'Leave blank to keep the current password.' : 'Set a password to enable sign-in for this existing member.') : 'Share this password securely with the member.' }}</small></label>
                 <label class="field"><span>Phone number</span><input name="phone" value="{{ old('phone', $member->phone) }}" autocomplete="tel"></label>
                 <label class="field full"><span>Address</span><textarea name="address" rows="2">{{ old('address', $member->address) }}</textarea></label>
             </div>
@@ -38,7 +39,7 @@
         <div class="info-card">
             <div class="info-card-icon">✦</div>
             <h3>Membership levels</h3>
-            <p>{{ $editing ? 'Changing a level starts its new validity period today.' : 'The selected level starts today when the member is registered.' }} Fees are shown for reference.</p>
+            <p>{{ $editing ? 'For an established member, changing the level creates a renewal transaction; the new level and dates apply after payment and approval. For a pending applicant, it updates the application transaction.' : 'The selected level starts today when the member is registered and an initial transaction is recorded.' }} Fees are shown for reference.</p>
             @foreach($levels as $level)
                 <div class="plan-option">
                     <div><strong>{{ $level->name }}</strong><span>₱{{ number_format($level->fee, 2) }} · {{ $level->validity_months }} months</span></div>
