@@ -46,7 +46,7 @@
                         <td>₱{{ number_format($transaction->balance, 2) }}</td>
                         <td><span class="badge badge-{{ $transaction->display_status }}">{{ ucfirst($transaction->display_status) }}</span></td>
                         <td>{{ $transaction->created_at?->format('M j, Y') }}</td>
-                        <td><a class="btn btn-outline btn-small" href="{{ route('transactions.show', $transaction) }}">View</a></td>
+                        <td><div class="transaction-row-actions"><a class="btn btn-outline btn-small" href="{{ route('transactions.show', $transaction) }}">View</a>@if($transaction->status === 'cancelled' && $transaction->payments->isEmpty())<form method="POST" action="{{ route('transactions.destroy', $transaction) }}" onsubmit="return confirm('Permanently delete this cancelled transaction? This cannot be undone.')">@csrf @method('DELETE')<button class="btn btn-danger-outline btn-small" type="submit">Delete</button></form>@endif</div></td>
                     </tr>
                 @empty
                     <tr><td colspan="10"><div class="empty-state"><span>₱</span><h3>No transactions yet</h3><p>Approving a membership application creates its initial transaction. Create renewals from this page.</p></div></td></tr>

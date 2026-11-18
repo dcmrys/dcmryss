@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Transaction '.$transaction->reference_no)
-@section('heading', $transaction->reference_no)
+@section('heading')
+    <span class="transaction-reference-heading">{{ $transaction->reference_no }}</span>
+@endsection
 @section('subtitle', ucfirst($transaction->type).' transaction for '.$transaction->member->full_name)
 @section('actions')
     <a class="btn btn-outline" href="{{ route('transactions.index') }}">← Transactions</a>
@@ -33,6 +35,12 @@
             <form method="POST" action="{{ route('transactions.cancel', $transaction) }}" class="transaction-action-form" onsubmit="return confirm('Cancel this transaction?')">
                 @csrf @method('PATCH')
                 <button class="btn btn-danger-outline" type="submit">Cancel transaction</button>
+            </form>
+        @endif
+        @if($transaction->status === 'cancelled' && $transaction->payments->isEmpty())
+            <form method="POST" action="{{ route('transactions.destroy', $transaction) }}" class="transaction-action-form" onsubmit="return confirm('Permanently delete this cancelled transaction? This cannot be undone.')">
+                @csrf @method('DELETE')
+                <button class="btn btn-danger-outline" type="submit">Delete transaction</button>
             </form>
         @endif
     </section>

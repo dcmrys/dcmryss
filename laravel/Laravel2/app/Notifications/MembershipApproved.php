@@ -16,6 +16,7 @@ class MembershipApproved extends Notification implements ShouldQueue
     public function __construct(
         public MembershipApplication $application,
         public MembershipTransaction $transaction,
+        public string $passwordSetupToken,
     ) {
         $this->afterCommit();
     }
@@ -32,11 +33,13 @@ class MembershipApproved extends Notification implements ShouldQueue
             ->greeting('Hello '.$this->application->full_name.',')
             ->line('Your membership application has been approved.')
             ->line('Transaction reference: '.$this->transaction->reference_no)
-            ->line('Amount due: ₱'.number_format((float) $this->transaction->amount_due, 2))
-            ->line('Your membership becomes active after the transaction is paid and approved.')
-            ->line('Your member profile is ready. Visit the sign-in page to access your account.')
-            ->line('If you have not set a password yet, submit your email without a password on the sign-in page. We will email you a secure setup link.')
-            ->action('Go to sign in', route('login'))
+            ->line('Click the link below to set up your password.')
+            ->action('Set up your password', route('password.setup', [
+                'token' => $this->passwordSetupToken,
+                'email' => $this->application->email,
+            ]))
+            ->line('This link expires in '.config('auth.passwords.users.expire').' minutes and can be used once.')
+            ->line('After setting your password, return to the sign-in page to access your account.')
             ->salutation(config('app.name'));
     }
 }

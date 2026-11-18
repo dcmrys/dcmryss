@@ -157,8 +157,9 @@
 
         .workspace-member { grid-template-columns: minmax(0, 1fr); }
 
-        .panel { min-width: 0; padding: 30px; border-radius: 26px; }
-        .composer { background: var(--glass-strong); }
+        .panel { min-width: 0; padding: 30px; border: 1px solid rgba(255, 224, 235, .14); border-radius: 26px; background: #2c1722; box-shadow: 0 18px 48px rgba(9, 2, 9, .22); }
+        .composer { background: #3a1d2c; }
+        .list-panel { background: #28141f; }
         .panel-kicker { margin-bottom: 12px; color: #e5a8bc; font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
         .panel h2 { margin-bottom: 8px; font-size: 1.55rem; font-weight: 650; letter-spacing: -.045em; }
         .panel-intro { margin-bottom: 27px; color: var(--muted); font-size: .9rem; line-height: 1.55; }
@@ -244,11 +245,11 @@
             padding: 18px;
             border: 1px solid rgba(255, 232, 239, .13);
             border-radius: 17px;
-            background: rgba(255, 244, 248, .06);
+            background: #351b28;
             transition: border-color .2s ease, background .2s ease, transform .2s ease;
         }
 
-        .task:hover { transform: translateY(-2px); border-color: rgba(255, 232, 239, .28); background: rgba(255, 244, 248, .09); }
+        .task:hover { transform: translateY(-2px); border-color: rgba(255, 232, 239, .28); background: #412232; }
         .task-icon {
             display: grid;
             width: 36px;
@@ -383,7 +384,7 @@
 
             <div class="workspace {{ auth()->user()->isAdmin() ? 'workspace-admin' : 'workspace-member' }}">
                 @if(auth()->user()->isAdmin())
-                <section class="panel composer glass" aria-labelledby="add-task-title">
+                <section class="panel composer" aria-labelledby="add-task-title">
                     <p class="panel-kicker">New Task</p>
                     <h2 id="add-task-title">Add a task</h2>
                     <p class="panel-intro">Provide a task name to enter.</p>
@@ -419,7 +420,7 @@
                 </section>
 
                 @endif
-                <section class="panel list-panel glass" aria-labelledby="saved-tasks-title">
+                <section class="panel list-panel" aria-labelledby="saved-tasks-title">
                     <div class="list-heading">
                         <div>
                             <p class="panel-kicker">Your Novelle</p>

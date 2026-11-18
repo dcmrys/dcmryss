@@ -212,6 +212,29 @@ class TransactionController extends Controller
         return redirect()->route('transactions.show', $transaction)->with('success', 'Transaction cancelled.');
     }
 
+    public function destroy(MembershipTransaction $transaction): RedirectResponse
+    {
+        DB::transaction(function () use ($transaction) {
+            $lockedTransaction = MembershipTransaction::whereKey($transaction->id)->lockForUpdate()->firstOrFail();
+
+            if ($lockedTransaction->status !== 'cancelled') {
+                throw ValidationException::withMessages([
+                    'transaction' => 'Only cancelled transactions can be deleted.',
+                ]);
+            }
+
+            if ($lockedTransaction->payments()->exists()) {
+                throw ValidationException::withMessages([
+                    'transaction' => 'A transaction with payment records cannot be deleted.',
+                ]);
+            }
+
+            $lockedTransaction->delete();
+        });
+
+        return redirect()->route('transactions.index')->with('success', 'Cancelled transaction deleted.');
+    }
+
     private function expireTransactions(): void
     {
         MembershipTransaction::where('status', 'approved')

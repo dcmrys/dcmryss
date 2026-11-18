@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
         Route::patch('transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
         Route::patch('transactions/{transaction}/cancel', [TransactionController::class, 'cancel'])->name('transactions.cancel');
+        Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
         Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
         Route::post('transactions/{transaction}/payments', [PaymentController::class, 'store'])->name('transactions.payments.store');
 

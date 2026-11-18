@@ -7,7 +7,7 @@ This Laravel 12 project has two sign-in roles and a public membership applicatio
 | Member | View posted tasks and the member directory. |
 | Admin | Create, view, edit, complete, and delete tasks; review applications; approve or reject applications; manage member profiles, categories, and levels. |
 
-Approving an application creates a pending member profile and a membership application transaction with the default lowest-fee membership level, then sends an approval notice. Record full payment and approve the transaction to activate the membership. If the new account still needs a password, its first sign-in attempt sends a one-time password setup link to the member's email. Existing member profiles without a login can be given one by editing the profile.
+Approving an application creates a pending member profile and a membership application transaction with the default lowest-fee membership level, then sends an approval notice with a one-time password setup link for new member accounts. Record full payment and approve the transaction to activate the membership. Existing member profiles without a login can be given one by editing the profile.
 
 ## Transaction processing
 

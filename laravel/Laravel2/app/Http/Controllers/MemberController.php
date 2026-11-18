@@ -232,7 +232,7 @@ class MemberController extends Controller
     public function destroy(Member $member)
     {
         if ($member->transactions()->exists()) {
-            return back()->withErrors(['member' => 'This member has transaction history and cannot be deleted. Deactivate them instead.']);
+            return back()->withErrors(['member' => 'Delete cancelled transactions without payments first. Other transaction and payment history must be retained.']);
         }
 
         DB::transaction(function () use ($member) {

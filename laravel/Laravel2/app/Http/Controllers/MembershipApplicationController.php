@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -41,8 +42,10 @@ class MembershipApplicationController extends Controller
         $wasApproved = $application->status === 'approved';
         $transactionReference = null;
         $applicationTransaction = null;
+        $approvedUser = null;
+        $passwordSetupToken = null;
 
-        DB::transaction(function () use ($application, $validated, $wasApproved, &$accountCreated, &$transactionReference, &$applicationTransaction) {
+        DB::transaction(function () use ($application, $validated, $wasApproved, &$accountCreated, &$transactionReference, &$applicationTransaction, &$approvedUser, &$passwordSetupToken) {
             $application->update(['status' => $validated['status']]);
 
             if ($validated['status'] !== 'approved') {
@@ -91,6 +94,7 @@ class MembershipApplicationController extends Controller
                 ]);
                 $accountCreated = true;
             }
+            $approvedUser = $user;
 
             if ($member->user_id !== $user->id) {
                 $member->update(['user_id' => $user->id]);
@@ -98,6 +102,12 @@ class MembershipApplicationController extends Controller
 
             if (! $wasApproved) {
                 $user->forceFill(['password_setup_required' => true])->save();
+            }
+
+            if ($user->password_setup_required) {
+                $passwordBroker = Password::broker();
+                $passwordBroker->deleteToken($user);
+                $passwordSetupToken = $passwordBroker->createToken($user);
             }
 
             $transactionStatus = $wasApproved && $member->status === 'active'
@@ -124,9 +134,8 @@ class MembershipApplicationController extends Controller
             $applicationTransaction = $transaction;
         });
 
-        if ($validated['status'] === 'approved') {
-            Notification::route('mail', $application->email)
-                ->notify(new MembershipApproved($application, $applicationTransaction));
+        if ($validated['status'] === 'approved' && $approvedUser && $applicationTransaction && $passwordSetupToken) {
+            $approvedUser->notify(new MembershipApproved($application, $applicationTransaction, $passwordSetupToken));
         }
 
         $message = "Application status updated to {$validated['status']}.";

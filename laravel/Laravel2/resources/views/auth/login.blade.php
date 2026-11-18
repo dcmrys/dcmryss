@@ -7,7 +7,7 @@
     <title>Sign in | {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/css/burgundy.css'])
 </head>
-<body class="auth-body">
+<body class="auth-body login-body">
     <main class="auth-shell">
         <header class="auth-header">
             <a class="auth-brand" href="{{ route('login') }}" aria-label="Novelle home">
@@ -35,7 +35,7 @@
                         <h2 id="signin-title">Sign in</h2>
                     </div>
                 </div>
-                <p class="auth-card-copy">Enter your email and password. If your approved member account has not set a password yet, submit with the password field empty to request a secure setup link.</p>
+                <p class="auth-card-copy">Enter your email and password to sign in. Newly approved members can use the secure password setup link in their approval email to create a password.</p>
 
                 @if(session('status'))
                     <div class="auth-notice" role="status">{{ session('status') }}</div>

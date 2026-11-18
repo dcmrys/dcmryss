@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Notifications\PasswordSetupRequested;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -25,19 +22,9 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('email', $credentials['email'])->first();
-        $setupPrompt = 'If this account needs an initial password, a secure setup link will be sent to its email. Otherwise, enter your password to sign in.';
+        $setupPrompt = 'Newly approved members: use the password setup link in your approval email. Existing members: enter your password to sign in.';
 
         if ($user?->role === 'member' && $user->password_setup_required) {
-            $key = 'member-password-setup:'.$user->getKey();
-
-            if (RateLimiter::tooManyAttempts($key, 1)) {
-                return redirect()->route('login')->with('status', $setupPrompt);
-            }
-
-            $token = Password::broker()->createToken($user);
-            $user->notify(new PasswordSetupRequested($token));
-            RateLimiter::hit($key, 60);
-
             return redirect()->route('login')->with('status', $setupPrompt);
         }
 

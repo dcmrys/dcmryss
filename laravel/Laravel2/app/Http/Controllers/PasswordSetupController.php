@@ -30,7 +30,7 @@ class PasswordSetupController extends Controller
 
         if (! Password::broker()->tokenExists($user, $token)) {
             return redirect()->route('login')->withErrors([
-                'email' => 'This setup link has expired or was already used. Sign in again to request a new link.',
+                'email' => 'This setup link has expired or was already used. Contact your membership administrator for help.',
             ]);
         }
 
