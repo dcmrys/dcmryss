@@ -36,6 +36,30 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 Open `/login` for admin or member sign-in. The admin can add further member accounts from the Members page.
 
+## InfinityFree deployment
+
+The deployment ZIP does not include the local `.env`, `node_modules`, logs, or generated Laravel cache files. Its Composer autoloader is not optimized so InfinityFree will accept the generated PHP files. Keep a separate `.env` on the host with a valid `APP_KEY` and these production settings:
+
+```dotenv
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://novelle.xo.je
+DB_CONNECTION=mysql
+DB_HOST=your-mysql-hostname
+DB_PORT=3306
+DB_DATABASE=your-full-database-name
+DB_USERNAME=your-hosting-database-username
+DB_PASSWORD=your-hosting-database-password
+SESSION_DRIVER=file
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
+MAIL_MAILER=log
+```
+
+Get the MySQL hostname, full database name, username, and password from your InfinityFree account. The local XAMPP values (`127.0.0.1`, `root`, and `membership`) will not connect from InfinityFree. If `DB_URL` is set, remove it so it does not override the individual database settings. Import the database schema and required data, including the `users` table and an admin account, through phpMyAdmin; InfinityFree does not provide a terminal for `php artisan migrate` or `db:seed`. `MAIL_MAILER=log` prevents delivery attempts until an SMTP provider is configured.
+
+See [InfinityFree's Laravel deployment guide](https://forum.infinityfree.com/t/how-to-install-a-laravel-site-on-infinityfree/118578) for the web root rewrite and file upload instructions.
+
 ## Email, maps, and weather
 
 The default mailer sends queued messages to a local Mailpit SMTP server at `127.0.0.1:1025`; start Mailpit and view captured messages at `http://127.0.0.1:8025`. Mailpit is a local testing inbox and does not deliver to external email accounts. Run `php artisan queue:work` in a second terminal to process queued messages. To deliver to a real inbox, configure your mail provider's SMTP host and credentials in `.env`.

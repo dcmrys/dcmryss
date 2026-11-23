@@ -21,37 +21,6 @@
             <section class="auth-intro" aria-labelledby="welcome-title">
                 <h1 id="welcome-title">Your community,<br><em>in one place.</em></h1>
                 <p>Stay up to date with shared tasks and find the people in your membership community.</p>
-                <div class="auth-features" aria-label="What you can do">
-                    @if($adminTestAccount)
-                        <aside class="auth-test-account auth-test-account-intro" aria-labelledby="admin-test-account-title">
-                            <div class="auth-test-account-heading">
-                                <div>
-                                    <p class="auth-test-account-label">Test account</p>
-                                    <h3 id="admin-test-account-title">Admin account for testing</h3>
-                                </div>
-                                <span class="auth-test-account-badge">ADMIN</span>
-                            </div>
-                            <p class="auth-test-account-copy">Use these credentials to explore the admin features.</p>
-                            @if($adminTestAccount['showCredentials'])
-                            <dl>
-                                <div><dt>Email</dt><dd>{{ $adminTestAccount['email'] }}</dd></div>
-                                <div><dt>Password</dt><dd>{{ $adminTestAccount['password'] }}</dd></div>
-                            </dl>
-                            <button class="auth-test-account-fill" type="button" id="fill-admin-test-account">Use this account <span aria-hidden="true">→</span></button>
-                            @endif
-                        </aside>
-
-                        @if($adminTestAccount['showCredentials'])
-                        <script>
-                            document.getElementById('fill-admin-test-account').addEventListener('click', function () {
-                                document.getElementById('email').value = @json($adminTestAccount['email']);
-                                document.getElementById('password').value = @json($adminTestAccount['password']);
-                                document.getElementById('password').focus();
-                            });
-                        </script>
-                        @endif
-                    @endif
-                </div>
             </section>
 
             <section class="auth-card" aria-labelledby="signin-title">

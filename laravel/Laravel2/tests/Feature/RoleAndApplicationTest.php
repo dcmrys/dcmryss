@@ -19,6 +19,18 @@ beforeEach(function () {
     $this->seed(DatabaseSeeder::class);
 });
 
+test('login does not expose bootstrap admin credentials', function () {
+    config()->set('auth.bootstrap_admin', [
+        'email' => 'private-admin@example.test',
+        'password' => 'private-admin-password',
+    ]);
+
+    $this->get(route('login'))
+        ->assertOk()
+        ->assertDontSee('private-admin@example.test')
+        ->assertDontSee('private-admin-password');
+});
+
 test('guests sign in and only admins may change tasks and members', function () {
     $admin = User::factory()->create(['role' => 'admin', 'password' => 'adminpass123']);
     $member = User::factory()->create(['role' => 'member', 'password' => 'memberpass123']);
