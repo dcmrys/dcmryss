@@ -29,6 +29,6 @@ This project can be deployed as a Docker web service with a Render Postgres data
 
 The container runs migrations at startup. On the first deploy, the seeder creates the configured admin account and the default membership categories and levels. Running the seeder again updates the admin account's email, password, name, and role from the current `ADMIN_EMAIL` and `ADMIN_PASSWORD`; turn `RUN_DB_SEEDER` off after the initial seed or a deliberate admin credential reset.
 
-`QUEUE_CONNECTION=sync` processes notification emails during the request, so a separate worker service is not required. Configure `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_SCHEME`, and `MAIL_FROM_ADDRESS` with an external mail provider. Free Render web services block outbound SMTP ports 25, 465, and 587; use a provider that supports another port such as 2525, or a paid service plan.
+`QUEUE_CONNECTION=sync` processes notification emails during the request, so a separate worker service is not required. For Brevo, set `MAIL_MAILER=brevo`, `BREVO_API_KEY` to a secret API key, and `MAIL_FROM_ADDRESS` to a verified sender address. This sends through Brevo's HTTPS API, so it does not depend on SMTP ports blocked by free Render web services.
 
 The admin test-credentials panel is restricted to `APP_ENV=local`, so it will not be shown on the production site. Local MySQL records are not copied automatically; migrate or import any data you want to keep into the Render Postgres database.
