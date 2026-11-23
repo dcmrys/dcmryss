@@ -1,8 +1,8 @@
 FROM php:8.3-apache-bookworm AS php-base
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libcurl4-openssl-dev libonig-dev libpq-dev libxml2-dev \
-    && docker-php-ext-install curl dom mbstring opcache pdo_pgsql xml \
+    && apt-get install -y --no-install-recommends libcurl4-openssl-dev libonig-dev libpq-dev libxml2-dev libzip-dev unzip \
+    && docker-php-ext-install curl dom mbstring opcache pdo_pgsql xml zip \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
