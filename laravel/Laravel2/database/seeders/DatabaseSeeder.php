@@ -53,11 +53,14 @@ class DatabaseSeeder extends Seeder
 
         $admin = config('auth.bootstrap_admin');
         if (filled($admin['email']) && filled($admin['password'])) {
-            User::firstOrCreate(['email' => $admin['email']], [
-                'name' => 'Administrator',
-                'password' => $admin['password'],
-                'role' => 'admin',
-            ]);
+            User::updateOrCreate(
+                ['email' => $admin['email']],
+                [
+                    'name' => 'Administrator',
+                    'password' => $admin['password'],
+                    'role' => 'admin',
+                ],
+            );
         }
 
         $demo = config('auth.bootstrap_member');
