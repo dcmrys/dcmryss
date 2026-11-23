@@ -36,6 +36,10 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 Open `/login` for admin or member sign-in. The admin can add further member accounts from the Members page.
 
+## Deploy to Render
+
+See [RENDER.md](RENDER.md) for the Docker setup, Render Postgres connection, and production environment variables.
+
 ## Email, maps, and weather
 
 The default mailer sends queued messages to a local Mailpit SMTP server at `127.0.0.1:1025`; start Mailpit and view captured messages at `http://127.0.0.1:8025`. Mailpit is a local testing inbox and does not deliver to external email accounts. Run `php artisan queue:work` in a second terminal to process queued messages. To deliver to a real inbox, configure your provider's SMTP host and credentials in `.env` (for Gmail, use an App Password). This Laravel version reads `MAIL_SCHEME` for SMTP scheme settings.
