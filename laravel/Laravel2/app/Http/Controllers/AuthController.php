@@ -11,7 +11,20 @@ class AuthController extends Controller
 {
     public function create()
     {
-        return view('auth.login');
+        $adminTestAccount = null;
+
+        if (app()->environment('local')) {
+            $admin = config('auth.bootstrap_admin', []);
+
+            if (filled($admin['email'] ?? null) && filled($admin['password'] ?? null)) {
+                $adminTestAccount = [
+                    'email' => $admin['email'],
+                    'password' => $admin['password'],
+                ];
+            }
+        }
+
+        return view('auth.login', compact('adminTestAccount'));
     }
 
     public function store(Request $request)

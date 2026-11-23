@@ -22,8 +22,31 @@
                 <h1 id="welcome-title">Your community,<br><em>in one place.</em></h1>
                 <p>Stay up to date with shared tasks and find the people in your membership community.</p>
                 <div class="auth-features" aria-label="What you can do">
-                    <div><span class="auth-feature-icon" aria-hidden="true">01</span><span>View the task dashboard</span></div>
-                    <div><span class="auth-feature-icon" aria-hidden="true">02</span><span>Browse the member directory</span></div>
+                    @if($adminTestAccount)
+                        <aside class="auth-test-account auth-test-account-intro" aria-labelledby="admin-test-account-title">
+                            <div class="auth-test-account-heading">
+                                <div>
+                                    <p class="auth-test-account-label">Local test account</p>
+                                    <h3 id="admin-test-account-title">Admin account for testing</h3>
+                                </div>
+                                <span class="auth-test-account-badge">ADMIN</span>
+                            </div>
+                            <p class="auth-test-account-copy">Use these credentials to explore the admin features.</p>
+                            <dl>
+                                <div><dt>Email</dt><dd>{{ $adminTestAccount['email'] }}</dd></div>
+                                <div><dt>Password</dt><dd>{{ $adminTestAccount['password'] }}</dd></div>
+                            </dl>
+                            <button class="auth-test-account-fill" type="button" id="fill-admin-test-account">Use this account <span aria-hidden="true">→</span></button>
+                        </aside>
+
+                        <script>
+                            document.getElementById('fill-admin-test-account').addEventListener('click', function () {
+                                document.getElementById('email').value = @json($adminTestAccount['email']);
+                                document.getElementById('password').value = @json($adminTestAccount['password']);
+                                document.getElementById('password').focus();
+                            });
+                        </script>
+                    @endif
                 </div>
             </section>
 
@@ -35,7 +58,7 @@
                         <h2 id="signin-title">Sign in</h2>
                     </div>
                 </div>
-                <p class="auth-card-copy">Enter your email and password to sign in. Newly approved members can use the secure password setup link in their approval email to create a password.</p>
+                <p class="auth-card-copy">For new accounts, apply for membership application and wait for admin's approval. A designated email will be sent if your application is approved.</p>
 
                 @if(session('status'))
                     <div class="auth-notice" role="status">{{ session('status') }}</div>
