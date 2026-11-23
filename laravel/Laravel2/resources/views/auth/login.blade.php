@@ -26,19 +26,22 @@
                         <aside class="auth-test-account auth-test-account-intro" aria-labelledby="admin-test-account-title">
                             <div class="auth-test-account-heading">
                                 <div>
-                                    <p class="auth-test-account-label">Local test account</p>
+                                    <p class="auth-test-account-label">{{ $adminTestAccount['showCredentials'] ? 'Local test account' : 'Testing access' }}</p>
                                     <h3 id="admin-test-account-title">Admin account for testing</h3>
                                 </div>
                                 <span class="auth-test-account-badge">ADMIN</span>
                             </div>
-                            <p class="auth-test-account-copy">Use these credentials to explore the admin features.</p>
+                            <p class="auth-test-account-copy">{{ $adminTestAccount['showCredentials'] ? 'Use these credentials to explore the admin features.' : 'Ask the project owner for temporary admin testing access.' }}</p>
+                            @if($adminTestAccount['showCredentials'])
                             <dl>
                                 <div><dt>Email</dt><dd>{{ $adminTestAccount['email'] }}</dd></div>
                                 <div><dt>Password</dt><dd>{{ $adminTestAccount['password'] }}</dd></div>
                             </dl>
                             <button class="auth-test-account-fill" type="button" id="fill-admin-test-account">Use this account <span aria-hidden="true">→</span></button>
+                            @endif
                         </aside>
 
+                        @if($adminTestAccount['showCredentials'])
                         <script>
                             document.getElementById('fill-admin-test-account').addEventListener('click', function () {
                                 document.getElementById('email').value = @json($adminTestAccount['email']);
@@ -46,6 +49,7 @@
                                 document.getElementById('password').focus();
                             });
                         </script>
+                        @endif
                     @endif
                 </div>
             </section>

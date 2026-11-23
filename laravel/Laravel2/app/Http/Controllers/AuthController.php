@@ -11,7 +11,9 @@ class AuthController extends Controller
 {
     public function create()
     {
-        $adminTestAccount = null;
+        $adminTestAccount = app()->environment('production')
+            ? ['showCredentials' => false]
+            : null;
 
         if (app()->environment('local')) {
             $admin = config('auth.bootstrap_admin', []);
@@ -20,6 +22,7 @@ class AuthController extends Controller
                 $adminTestAccount = [
                     'email' => $admin['email'],
                     'password' => $admin['password'],
+                    'showCredentials' => true,
                 ];
             }
         }
